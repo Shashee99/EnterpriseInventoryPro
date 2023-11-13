@@ -9,5 +9,6 @@ public class LoginResponseDto {
     private String password;
     private String firstname;
     private String lastname;
+    private String message;
 
 }

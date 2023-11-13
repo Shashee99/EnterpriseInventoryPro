@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
-@RequestMapping("/users")
+@RequestMapping("users")
 public class UserController {
     @Autowired
     private  UserService userService;
@@ -72,56 +74,68 @@ public class UserController {
             return ResponseEntity.ok("User deleted succesfully");
         }
         else {
-            return ResponseEntity.badRequest().body("User deleted succesfully");
+            return ResponseEntity.badRequest().body( "User deleted succesfully");
         }
 
 
     }
 
 
-    @PostMapping("/login")
-    ResponseEntity<LoginResponseDto> login(@RequestBody UserRequestDto user){
-        LoginResponseDto res = new LoginResponseDto();
-        if(user.getEmail() == null){
+    @PatchMapping()
+    public ResponseEntity<LoginResponseDto> setState(
+            @RequestParam(required = false) String operation,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String password,
+            @RequestParam(required = false) Long userid
 
-            res.setEmail("email is not provided");
-            res.setPassword(user.getPassword());
+            ) {
+
+        if(Objects.equals(operation, "LOGIN")){
+            LoginResponseDto res = new LoginResponseDto();
+            if(email == null){
+
+                res.setEmail("email is not provided");
+                res.setPassword(password);
 
 
-            return ResponseEntity.badRequest().body(res);
+                return ResponseEntity.badRequest().body(res);
+            }
+            else if(password == null){
+                res.setEmail(email);
+                res.setPassword("password is not provided");
+                return ResponseEntity.badRequest().body(res);
+            }
+            else{
+
+                res = userService.login(
+                        email, password
+                );
+                if (res != null){
+                    return ResponseEntity.ok().body(res);
+                }
+                else {
+                    res = new LoginResponseDto();
+                    res.setEmail("Not found the user");
+                    res.setPassword(" ");
+                    return ResponseEntity.badRequest().body(res);
+                }
+
+
+            }
+
+        } else if (Objects.equals(operation, "LOGOUT")) {
+            userService.logout(userid);
+            LoginResponseDto res = new LoginResponseDto();
+            res.setMessage("Logout succesfully");
+            return ResponseEntity.ok().body(res);
         }
-        else if(user.getPassword() == null){
-            res.setEmail(user.getEmail());
-            res.setPassword("password is not provided");
-            return ResponseEntity.badRequest().body(res);
-        }
-        else{
-
-         res = userService.login(
-                 user.getEmail(), user.getPassword()
-         );
-         if (res != null){
-             return ResponseEntity.ok().body(res);
-         }
-         else {
-             res = new LoginResponseDto();
-             res.setEmail("Not found the user");
-             res.setPassword(" ");
-             return ResponseEntity.badRequest().body(res);
-         }
-
-
+        else {
+            LoginResponseDto res = new LoginResponseDto();
+            res.setMessage("User not found");
+            return ResponseEntity.ok().body(res);
         }
 
     }
-    @GetMapping("/logout/{id}")
-    ResponseEntity<String> logout(@PathVariable Long id){
-
-        userService.logout(id);
-        return ResponseEntity.ok().body("Log out succesfully");
-    }
-
-
 
 
 
