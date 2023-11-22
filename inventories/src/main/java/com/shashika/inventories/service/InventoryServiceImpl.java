@@ -27,7 +27,6 @@ public class InventoryServiceImpl implements InventoryService {
         Inventory inventory = new Inventory();
         inventory.setType(req.getType());
         inventory.setPrice(req.getPrice());
-        inventory.setUser(req.getUser_id());
         inventory.setExpired_on(req.getExpired_on());
         inventory.setDescription(req.getDescription());
         inventory.setBrand(req.getBrand());
@@ -77,7 +76,6 @@ public class InventoryServiceImpl implements InventoryService {
         Optional<Inventory> existingInv = inventoryRepository.findById(inventoryid);
         if(existingInv.isPresent()){
             InventoryResponseDto inv = new InventoryResponseDto();
-            inv.setUser_id(existingInv.get().getUser());
             inv.setDescription(existingInv.get().getDescription());
             inv.setType(existingInv.get().getType());
             inv.setExpired_on(existingInv.get().getExpired_on());
@@ -92,9 +90,9 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Page<Inventory> getAllInventoriesbyuserId(Long userid, Pageable pageable) {
+    public Page<Inventory> getAllInventories( Pageable pageable) {
 
-        return inventoryRepository.findAllByUser(userid,pageable);
+        return inventoryRepository.findAll(pageable);
     }
 
     @Override
@@ -109,9 +107,8 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Page<Inventory> searchInventory(Long userId, List<String> brands, List<String> types, String description, Pageable pageable) {
+    public Page<Inventory> searchInventory(List<String> brands, List<String> types, String description, Pageable pageable) {
         return inventoryRepository.search(
-                userId,
                 brands == null || brands.isEmpty() ? null : brands,
                 types == null || types.isEmpty() ? null : types,
                 StringUtils.isEmpty(description) ? null : description.toLowerCase(),

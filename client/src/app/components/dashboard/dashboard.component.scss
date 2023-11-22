@@ -1,0 +1,35 @@
+.dashboard{
+  //max-width: 900px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  //border: 1px solid black;
+}
+table {
+  width: 100%;
+}
+.invtbldata{
+  width: 100%;
+}
+.example-form {
+  display: flex;
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+  margin: 0px 5px;
+}
+
+.operations{
+  margin: 2px;
+}
+.operations>button{
+  margin: 10px;
+}
+
+.actiopnbtn>button{
+  margin-left: 5px;
+}

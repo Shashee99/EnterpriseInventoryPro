@@ -8,7 +8,6 @@ import java.time.LocalDate;
 public class InventoryUpdateRequestDto {
 
     private Long id;
-    private Long user_id;
     private String brand;
     private String type;
     private String description;

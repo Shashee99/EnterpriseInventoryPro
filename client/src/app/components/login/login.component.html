@@ -1,0 +1,51 @@
+<div class="center">
+  <mat-card>
+    <mat-card-content>
+      <mat-card-header><h1>Login</h1></mat-card-header>
+      <mat-card-content>
+        <form class="example-form">
+          <mat-form-field class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+                   placeholder="Ex. pat@example.com"   >
+
+
+
+            <!-- Use *ngIf for conditional rendering -->
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+              Please enter a valid email address
+            </mat-error>
+
+            <!-- Use *ngIf for conditional rendering -->
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+              Email is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <mat-label>Password</mat-label>
+            <input type="password" matInput [formControl]="passwordFormControl" [errorStateMatcher]="matcher"
+                   placeholder="Input password" >
+
+
+
+            <!-- Use *ngIf for conditional rendering -->
+
+
+            <!-- Use *ngIf for conditional rendering -->
+            <mat-error *ngIf="passwordFormControl.hasError('required')">
+              Password is <strong>required</strong>
+            </mat-error>
+          </mat-form-field >
+
+          <div class="loginbtn">
+            <button mat-raised-button type="button" color="primary"  (click)="onLogin()"  >Login</button>
+          </div>
+           <div style="padding-top: 10px">
+             <a routerLink="/register" >Click here to Register</a>
+           </div>
+
+        </form>
+      </mat-card-content>
+    </mat-card-content>
+  </mat-card>
+</div>

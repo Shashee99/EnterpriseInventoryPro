@@ -3,6 +3,7 @@ package com.shashika.inventories.controller;
 import com.shashika.inventories.dto.requesDto.InventoryRequestDto;
 import com.shashika.inventories.dto.requesDto.InventoryUpdateRequestDto;
 import com.shashika.inventories.dto.responseDto.InventoryResponseDto;
+import com.shashika.inventories.dto.responseDto.ResponseDto;
 import com.shashika.inventories.entity.Inventory;
 import com.shashika.inventories.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +15,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/inventories")
+@RequestMapping("inventories")
 public class InventoryController {
     @Autowired
     private InventoryService inventoryService;
 //    create
     @PostMapping()
-    ResponseEntity<String> addInventory(@RequestBody InventoryRequestDto req){
-        if(req.getUser_id() == null){
-            return ResponseEntity.badRequest().body("User id is not found");
-        } else if (req.getDescription() == null) {
+    ResponseEntity<?> addInventory(@RequestBody InventoryRequestDto req){
+        if (req.getDescription() == null) {
             return ResponseEntity.badRequest().body("Description is not found");
         } else if (req.getBrand() == null) {
             return ResponseEntity.badRequest().body("Brand is not found");
@@ -39,7 +38,7 @@ public class InventoryController {
         else{
            boolean result = inventoryService.addInvertory(req);
            if (result){
-               return ResponseEntity.ok().body("Inventory added successfully");
+               return ResponseEntity.ok().body(new ResponseDto("added succesfully"));
            }
            else {
                return ResponseEntity.badRequest().body("Error occured");
@@ -56,7 +55,7 @@ public class InventoryController {
     @GetMapping()
     ResponseEntity<?> getInventory(
             @RequestParam(required = false) String operation,
-            @RequestParam(required = false) Long userid,
+
             @RequestParam(required = false) Long invid,
             @RequestParam(required = false) List<String> brands,
             @RequestParam(required = false) List<String> typelist,
@@ -66,19 +65,12 @@ public class InventoryController {
     ) {
         Pageable pageable = PageRequest.of(offset, pageSize);
 
-       if(Objects.equals(operation, "GETUSERINV")){
-           if(userid != null){
-               return ResponseEntity.ok(inventoryService.getAllInventoriesbyuserId(userid,pageable));    
-           }
-           else{
-               return ResponseEntity.ok("User id not provided");
-           }
-       } else if (Objects.equals(operation, "GETINVBYID")) {
-           return ResponseEntity.ok(inventoryService.getInventorybyInventoryId(invid));
+       if(Objects.equals(operation, "GETALL")) {
+
+           return ResponseEntity.ok(inventoryService.getAllInventories(pageable));
 
        } else if (Objects.equals(operation, "SEARCH")) {
            Page<Inventory> searchResult = inventoryService.searchInventory(
-                   userid,
                    brands,
                    typelist,
                    description,
@@ -91,20 +83,29 @@ public class InventoryController {
 
     }
 
+
+    @GetMapping("/{id}")
+    ResponseEntity<?> getInventorybyid(@PathVariable Long id){
+        return ResponseEntity.ok(inventoryService.getInventorybyInventoryId(id));
+    }
+
+
+
     @DeleteMapping()
-    ResponseEntity<String> deleteInventory(@RequestParam(required = false) List<Long> ids){
+    ResponseEntity<?> deleteInventory(@RequestParam(required = false) List<Long> ids){
+//        System.out.println(ids);
         inventoryService.deleteInventory(ids);
-        return ResponseEntity.ok("Deleted record");
+        return ResponseEntity.ok(new ResponseDto("User deleted!"));
     }
 
     @PutMapping()
-    ResponseEntity<String> updateInventory(@RequestBody InventoryUpdateRequestDto req){
+    ResponseEntity<?> updateInventory(@RequestBody InventoryUpdateRequestDto req){
         boolean result = inventoryService.updateInventory(req);
         if(result){
-            return ResponseEntity.ok("Update Successfully");
+            return ResponseEntity.ok(new ResponseDto("Updated successfully"));
         }
         else {
-           return ResponseEntity.badRequest().body("Fail to update");
+           return ResponseEntity.badRequest().body(new ResponseDto("Failed to update"));
         }
     }
 

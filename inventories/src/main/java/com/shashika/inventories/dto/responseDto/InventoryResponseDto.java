@@ -11,7 +11,7 @@ public class InventoryResponseDto {
     private Long id;
 
     @Column(name = "user_id")
-    private Long user_id;
+
     private String brand;
     private String type;
     private String description;

@@ -1,0 +1,53 @@
+
+<div mat-dialog-content>
+  <h4>Update product details</h4>
+  <mat-form-field>
+    <mat-label>Select Brand </mat-label>
+    <select matNativeControl required [(ngModel)]="data.brand">
+      <option value="Apple">Apple</option>
+      <option value="Samsung">Samsung</option>
+      <option value="MSI">MSI</option>
+      <option value="other">other</option>
+    </select>
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Select  Type</mat-label>
+    <select matNativeControl required [(ngModel)]="data.type">
+      <option value="iphone">iPhone</option>
+      <option value="tab">Tab</option>
+      <option value="ipad">iPad</option>
+      <option value="macbook">MacBook</option>
+      <option value="tv">TV</option>
+      <option value="laptop">Laptop</option>
+    </select>
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <input matInput type="text" [(ngModel)]="data.description">
+  </mat-form-field>
+  <br>
+  <br>
+  <mat-form-field>
+    <mat-label>Price</mat-label>
+    <input matInput type="text" [(ngModel)]="data.price">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Expire date</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="data.expired_on">
+
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+
+</div>
+
+
+<div mat-dialog-actions>
+  <button mat-raised-button type="button" color="primary" [mat-dialog-close]="data" cdkFocusInitial>Update</button>
+  <button mat-raised-button type="button" color="warn" (click)="onNoClick()">Cancel</button>
+
+</div>

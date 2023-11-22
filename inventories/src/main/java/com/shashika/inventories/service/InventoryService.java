@@ -16,9 +16,9 @@ public interface InventoryService {
     boolean addInvertory(InventoryRequestDto req);
     boolean updateInventory(InventoryUpdateRequestDto req);
     InventoryResponseDto getInventorybyInventoryId(Long inventoryid);
-    Page<Inventory> getAllInventoriesbyuserId(Long userid, Pageable pageable);
+    Page<Inventory> getAllInventories(Pageable pageable);
     void deleteInventory(List<Long> inventoryId);
 
-    Page<Inventory> searchInventory(Long userId,List<String> brands, List<String> types, String description, Pageable pageable);
+    Page<Inventory> searchInventory(List<String> brands, List<String> types, String description, Pageable pageable);
 
 }

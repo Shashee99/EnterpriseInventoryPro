@@ -3,6 +3,7 @@ package com.shashika.users.controller;
 import com.shashika.users.dto.request.UserRequestDto;
 import com.shashika.users.dto.request.UserUpdateRequestDto;
 import com.shashika.users.dto.response.LoginResponseDto;
+import com.shashika.users.dto.response.ResponseDto;
 import com.shashika.users.dto.response.UserResponseDto;
 import com.shashika.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("users")
 public class UserController {
@@ -19,7 +20,7 @@ public class UserController {
 
 
     @PostMapping()
-    ResponseEntity<String> addUser(@RequestBody UserRequestDto user){
+    ResponseEntity<?> addUser(@RequestBody UserRequestDto user){
         if(user.getFirstname() == null){
             return ResponseEntity.badRequest().body("First name not provided");
         }
@@ -36,7 +37,7 @@ public class UserController {
 
             userService.addUser(user);
 
-            return ResponseEntity.ok().body("User Created Successfully");
+            return ResponseEntity.ok().body(new ResponseDto("User created!"));
         }
 
     }

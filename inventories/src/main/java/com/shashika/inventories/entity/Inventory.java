@@ -18,7 +18,7 @@ public class Inventory {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Long user;
+
     private String brand;
     private String type;
     private String description;

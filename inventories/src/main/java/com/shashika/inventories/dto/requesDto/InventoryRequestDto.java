@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Data
 public class InventoryRequestDto {
 
-    private Long user_id;
+
     private String brand;
     private String type;
     private String description;
